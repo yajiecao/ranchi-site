@@ -126,7 +126,7 @@ const Button: React.FC<{
       ? "bg-[var(--umami)] text-[var(--ink)] hover:brightness-95 border-2 border-[var(--ink)]"
       : "bg-[var(--mayo)] text-[var(--ink)] hover:brightness-95 border-2 border-[var(--ink)]";
 
-  // ✅ No 'any' — treat the tag as a valid React element type
+  // ✅ type-safe: no 'any'
   const Comp = (href ? "a" : "button") as React.ElementType;
 
   return (
@@ -135,6 +135,7 @@ const Button: React.FC<{
     </Comp>
   );
 };
+
 
 
 // Order menu (3 options) -----------------------------------------------------
@@ -179,12 +180,14 @@ const OrderMenuButton: React.FC<{
       : "px-5 py-2.5";
   const cls = `inline-flex items-center justify-center ${R.btn} font-semibold shadow-[2px_2px_0_0_var(--ink)] transition-transform active:translate-y-[1px] active:shadow-[1px_1px_0_0_var(--ink)] bg-[var(--umami)] text-[var(--ink)] hover:brightness-95 border-2 border-[var(--ink)] ${sizing}`;
   React.useEffect(() => {
-    const onDoc = (e: any) => {
-      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
-    };
-    document.addEventListener("click", onDoc);
-    return () => document.removeEventListener("click", onDoc);
-  }, []);
+  const onDoc = (e: MouseEvent) => {
+    if (ref.current && !ref.current.contains(e.target as Node)) {
+      setOpen(false);
+    }
+  };
+  document.addEventListener("click", onDoc);
+  return () => document.removeEventListener("click", onDoc);
+}, []);
   return (
     <div className="relative inline-block" ref={ref}>
       <button type="button" className={cls} onClick={() => setOpen((v) => !v)}>
