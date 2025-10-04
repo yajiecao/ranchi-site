@@ -117,18 +117,25 @@ const Button: React.FC<{
       : size === "sm"
       ? "px-3 py-1.5 text-sm"
       : "px-5 py-2.5";
-  const base = `inline-flex items-center justify-center ${R.btn} font-semibold shadow-[2px_2px_0_0_var(--ink)] transition-transform active:translate-y-[1px] active:shadow-[1px_1px_0_0_var(--ink)]`;
+
+  const base =
+    "inline-flex items-center justify-center rounded-xl font-semibold shadow-[2px_2px_0_0_var(--ink)] transition-transform active:translate-y-[1px] active:shadow-[1px_1px_0_0_var(--ink)]";
+
   const styles =
     variant === "primary"
       ? "bg-[var(--umami)] text-[var(--ink)] hover:brightness-95 border-2 border-[var(--ink)]"
       : "bg-[var(--mayo)] text-[var(--ink)] hover:brightness-95 border-2 border-[var(--ink)]";
-  const Comp: any = href ? "a" : "button";
+
+  // ✅ No 'any' — treat the tag as a valid React element type
+  const Comp = (href ? "a" : "button") as React.ElementType;
+
   return (
     <Comp href={href} className={[base, styles, sizing].join(" ")}>
       {children}
     </Comp>
   );
 };
+
 
 // Order menu (3 options) -----------------------------------------------------
 const ORDER_LINKS = [
